@@ -1,14 +1,11 @@
-Splitsdb::Application.routes.draw do
+Splitsdb::Application.routes.draw do  resources :users
   resources :divisions
-
   resources :categories
-
   resources :games
 
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
+get 'login' => 'user_sessions#new'
+get 'logout' => 'user_sessions#destroy'
 
-  # You can have the root of your site routed with "root"
 root 'games#index'
 
   # Example of regular route:
@@ -45,7 +42,7 @@ root 'games#index'
   #       get 'recent', on: :collection
   #     end
   #   end
-  
+
   # Example resource route with concerns:
   #   concern :toggleable do
   #     post 'toggle'

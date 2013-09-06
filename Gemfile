@@ -34,9 +34,7 @@ end
 
 gem 'bootstrap-sass', github: 'thomas-mcdonald/bootstrap-sass', branch: '3'
 gem 'haml-rails'
-
-# Use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
+gem 'authlogic'
 
 # Use unicorn as the app server
 # gem 'unicorn'

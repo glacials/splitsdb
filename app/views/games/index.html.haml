@@ -1,9 +1,9 @@
 %h1 Games
 .row
   - @games.each do |game|
-    .col-sm-6.col-md-3
+    .col-sm-3.col-md-3
       %a.thumbnail{:href => "/games/#{game.id}"}
         %img{:alt => game.name, "src" => "#{game.cover}"}/
-  .col-sm-6.col-md-3
+  .col-sm-3.col-md-3
     %a.thumbnail{:href => new_game_path}
       New game
