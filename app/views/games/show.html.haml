@@ -1,0 +1,26 @@
+%h1= @game.name
+.row
+  .col-md-4
+    %img{:alt => @game.name, "src" => "#{@game.cover}"}/
+  .col-md-8
+    %ul.nav.nav-tabs{:style => "border-bottom: none;"}
+      /- @game.categories.each do |category|
+      %li.active
+        %a{:href => "#"} Any% NG+
+      %li
+        %a{:href => "#"} Any%
+      %li
+        %a{:href => "#"} 100%
+
+    .panel.panel-default
+      %table.table{:style => "border-top: none;"}
+        %tr{:style => "border-top: none;"}
+          %td{:style => "border-top: none;"}
+            %b="User"
+          %td{:style => "border-top: none;"}
+            %b="Finish time"
+        %tr
+          %td
+            glacials
+          %td
+            1:23:45
