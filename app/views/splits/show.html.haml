@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @split.name
+%p
+  %b Run:
+  = @split.run
+%p
+  %b Old:
+  = @split.old
+%p
+  %b Best run:
+  = @split.best_run
+%p
+  %b Best segment:
+  = @split.best_segment
+
+= link_to 'Edit', edit_split_path(@split)
+\|
+= link_to 'Back', splits_path

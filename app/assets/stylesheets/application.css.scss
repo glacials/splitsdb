@@ -11,4 +11,17 @@
  *= require_self
  *= require_tree .
  */
-@import "bootstrap"
+
+.ui-autocomplete {
+  @extend .dropdown-menu;
+}
+
+@import "bootstrap";
+
+.alert {
+  margin-top: 20px;
+}
+
+.glyphicon {
+  margin-right: 3px;
+}

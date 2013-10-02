@@ -1,0 +1,7 @@
+%h1 Categories for #{@game.name}
+.col-md-6
+  .list-group
+    - @categories.each do |category|
+      %a.list-group-item{:href => "/games/#{@game.id}/categories/#{category.id}"}
+        %h4.list-group-item-heading #{category.name}
+        %p.list-group-item-text #{category.description}

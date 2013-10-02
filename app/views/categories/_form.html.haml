@@ -1,0 +1,17 @@
+- if @category.errors.any?
+  .alert.alert-danger
+    %b
+      = pluralize(@category.errors.count, "error")
+      prohibited this category from being saved:
+    %ul
+      - @category.errors.full_messages.each do |msg|
+        %li= msg
+.col-md-6
+  .form-group
+    %input.form-control.input-lg{:name => "category[name]", :placeholder => "Name", :type => "text"}/
+  .form-group
+    %textarea.form-control{:name => "category[description]", :placeholder => "Description", :type => "text"}
+  .actions
+    .btn-group
+      %a.btn.btn-default{:href => game_path(@game)} &larr; Back
+      %input.btn.btn-default{:name => :commit, :type => :submit, :value => "Create category"}

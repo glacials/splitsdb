@@ -1,0 +1,18 @@
+= form_for(@game) do |f|
+  - if @game.errors.any?
+    .alert.alert-danger
+      %b
+        = pluralize(@game.errors.count, "error")
+        prohibited this game from being saved:
+      %ul
+        - @game.errors.full_messages.each do |msg|
+          %li= msg
+  .col-md-6
+    .form-group
+      %input.form-control.input-lg{:name => "game[name]", :placeholder => "Name", :type => "text", :value => @game.name}/
+    .form-group
+      %input.form-control{:name => "game[cover]", :placeholder => "Cover image URL", :type => "text"}/
+    .actions
+      .btn-group
+        %a.btn.btn-default{:href => games_path} &larr; Back
+        %input.btn.btn-default{:name => :commit, :type => :submit, :value => "Save game"}

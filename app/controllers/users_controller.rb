@@ -24,15 +24,28 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'Successfully signed up.' }
-        format.json { render action: 'show', status: :created, location: @user }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+    if user_params[:action] == 'signup'
+      @user = User.create(user_params.except(:action))
+      @session = UserSession.create(:email => user_params[:email], :password => user_params[:password], :remember_me => true)
+      respond_to do |format|
+        if @user.save
+          format.html { redirect_to '/', notice: 'Account created! Welcome, ' + @user.name + '.' }
+          format.json { render action: 'show', status: :created, location: @user }
+        else
+          format.html { redirect_to action: 'new' }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      @session = UserSession.create(:email => user_params[:email], :password => user_params[:password], :remember_me => true)
+      respond_to do |format|
+        if @session.save
+          format.html { redirect_to root_path, notice: "Welcome, #{current_user.name}. You're logged in!" }
+          format.json { render action: 'show', location: current_user }
+        else
+          format.html { redirect_to login_path, alert: 'Incorrect email or password.' }
+          format.json { render json: current_user.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -64,11 +77,11 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      @user = User.friendly.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:email, :handle, :password)
+      params.require(:user).permit(:action, :email, :name, :password, :password_confirmation)
     end
 end

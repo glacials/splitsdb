@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  run_id: 
+  old: 1
+  best_run: 1
+  best_segment: 1
+
+two:
+  name: MyString
+  run_id: 
+  old: 1
+  best_run: 1
+  best_segment: 1

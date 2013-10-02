@@ -1,0 +1,27 @@
+%h1 Listing splits
+
+%table
+  %tr
+    %th Name
+    %th Run
+    %th Old
+    %th Best run
+    %th Best segment
+    %th
+    %th
+    %th
+
+  - @splits.each do |split|
+    %tr
+      %td= split.name
+      %td= split.run
+      %td= split.old
+      %td= split.best_run
+      %td= split.best_segment
+      %td= link_to 'Show', split
+      %td= link_to 'Edit', edit_split_path(split)
+      %td= link_to 'Destroy', split, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Split', new_split_path

@@ -1,0 +1,35 @@
+= form_for @run do |f|
+  - if @run.errors.any?
+    #error_explanation
+      %b
+        = pluralize(@game.errors.count, "error")
+        prohibited this game from being saved:
+      %ul
+        - @game.errors.full_messages.each do |msg|
+          %li= msg
+
+  - if @game.nil?
+    .col-md-6
+      %h1 What game was this run for?
+      .form-group
+        %input.form-control.input-lg{:name => "run[game]", :placeholder => "Game", :type => "text", 'data-autocomplete' => '/games/autocomplete_game_name', :value => "#{@run.game.name if @run.game}"}/
+      %input.btn.btn-default{:name => :commit, :type => :submit, :value => 'Choose a category &rarr;'.html_safe}
+  - else
+    %h1 What category?
+    .col-md-6
+      .form-horizontal
+        .form-group
+          %label.col-md-2.control-label Game
+          .col-md-10
+            %p.form-control-static
+              #{@game.name}
+              %a.label.label-primary{:href => '/runs/' + @run.id.to_s + '/edit'} Change
+        .form-group
+          %label.col-md-2.control-label Category
+          .col-md-10
+            .list-group
+              - @game.categories.each do |category|
+                %a.list-group-item{:href => '/games/' + @game.id.to_s + '/categories/' + category.id.to_s + '/runs/' + @run.id.to_s + '/edit'}
+                  %h4.list-group-item-heading #{category.name}
+                  %p.list-group-item-text #{category.description}
+    .col-md-6

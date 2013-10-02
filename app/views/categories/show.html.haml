@@ -1,0 +1,33 @@
+.col-md-12
+  %h1=@game.name
+.col-md-3
+  - if @game.cover.present?
+    %img.img-responsive.thumbnail{:alt => @game.name, "src" => "#{@game.cover}", :width => 350}/
+  - else
+    %a.thumbnail{:href => edit_game_path, :style => 'height: 357px; width: 350px; font-size: 200px; text-align: center;  text-decoration: none;'} +
+.col-md-9
+  %ul.nav.nav-tabs{:style => "border-bottom: none;"}
+    - @game.categories.each do |category|
+      %li{:class => "#{'active' if @category.id == category.id}"}
+        %a{:href => game_category_path(@game, category)} #{category.name}
+    %li.pull-right
+      %a{:href => new_game_category_path(@game)} + Add category
+  .panel.panel-default
+    %table.table.table-striped.table-hover{:style => "border-top: none;"}
+      %tr{:style => "border-top: none;"}
+        %td{:style => "border-top: none;"}
+          %b="User"
+        %td{:style => "border-top: none;"}
+          %b="Finish time"
+      - if @category
+        - @category.runs.each do |run|
+          %tr{:onclick => "document.location = '#{game_category_run_path(run.game, run.category, run)}'", :style => "cursor: pointer;"}
+            %a{:href => game_category_run_path(run.game, run.category, run)}
+              %td
+                = run.user.name
+              %td
+                %a{:href => game_category_run_path(run.game, run.category, run)} #{run.time}
+        %tr
+          %td{:colspan => 2}
+            %a{:href => new_game_category_run_path(@game, @category)}
+              + Upload a run for this category

@@ -1,0 +1,27 @@
+= form_for @run, :url => game_category_runs_path, :html => {:class => 'form-horizontal'} do |f|
+  - if @run.errors.any?
+    .alert.alert-danger
+      %b= "#{pluralize(@run.errors.count, "error")} prohibited this run from being saved:"
+      %ul
+        - @run.errors.full_messages.each do |msg|
+          %li= msg
+  - if params[:game_id].present? and params[:category_id].present?
+    .form-group
+      %label.col-md-2.control-label
+        Game
+      .col-md-10
+        %p.form-control-static
+          #{@game.name}
+    .form-group
+      %label.col-md-2.control-label
+        Category
+      .col-md-10
+        %p.form-control-static
+          #{@category.name}
+  .form-group
+    %label.col-md-2.control-label
+      File
+    .col-md-10
+      = f.file_field :file
+  .actions
+    %input.btn.btn-default{:name => :commit, :type => :submit, :value => "Upload"}

@@ -1,59 +1,26 @@
-Splitsdb::Application.routes.draw do  resources :users
-  resources :divisions
-  resources :categories
-  resources :games
+Splitsdb::Application.routes.draw do 
+  get '/login'  => 'users#new'
+  get '/signup' => 'users#new'
+  get '/logout' => 'user_sessions#destroy'
+  get '/upload' => 'runs#new'
+  get '/games'  => 'games#index'
 
-get 'login' => 'user_sessions#new'
-get 'logout' => 'user_sessions#destroy'
+  get '/users/:id' => 'users#show', :as => :user
+  get '/users/:id/edit' => 'users#edit', :as => :edit_user
+  get '/:game_id/:category_id/runs/:id/compare/:compare_id' => 'runs#show', :as => :compare
 
-root 'games#index'
+  root 'static_pages#home'
 
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
+  resources :users do
+    resources :runs
+  end
+  resources :games, :path => ''
+  resources :games, :path => '', :only => [] do
+    resources :categories, :path => '' do
+      resources :runs
+    end
+    #get :autocomplete_game_name, :on => :collection
+  end
 
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+  post '/:game_id/:category_id/runs/:id' => 'runs#compare'
 end

@@ -1,0 +1,32 @@
+- if current_user.present?
+  %h1 Hey, #{current_user.name}.
+  .col-md-9
+    %h2 Here are some of your recent splits.
+    .panel.panel-default
+      %table.table.table-striped.table-hover{:style => "border-top: none;"}
+        %tr{:style => "border-top: none;"}
+          %td{:style => "border-top: none;"}
+            %b Game
+          %td{:style => "border-top: none;"}
+            %b Category
+          %td{:style => "border-top: none;"}
+            %b Finish time
+        - current_user.runs[0,6].each do |run|
+          %tr{:onclick => "document.location = '#{game_category_run_path(run.game, run.category, run)}'", :style => "cursor: pointer;"}
+            %td
+              = run.game.name
+            %td
+              = run.category.name
+            %td
+              %a{:href => game_category_run_path(run.game, run.category, run)} #{run.time}
+- else
+  .jumbotron{:style => 'margin-top: 20px;'}
+    %h1
+      All your splits, catalogued
+    %p
+      splitsdb is a hub for speedrunners to organize splits. Upload all your most
+      recent splits and enjoy statistics and compare yourself to other runners in
+      your category.
+    %p
+      %a.btn.btn-primary.btn-lg{:href => signup_path}
+        Sign up

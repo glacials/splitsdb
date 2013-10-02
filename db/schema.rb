@@ -11,39 +11,68 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130906073512) do
+ActiveRecord::Schema.define(version: 20130910004206) do
 
   create_table "categories", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "divisions", force: true do |t|
     t.integer  "game_id"
-    t.integer  "category_id"
+    t.string   "name"
+    t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "slug"
   end
 
-  add_index "divisions", ["category_id"], name: "index_divisions_on_category_id"
-  add_index "divisions", ["game_id"], name: "index_divisions_on_game_id"
+  add_index "categories", ["game_id"], name: "index_categories_on_game_id"
+  add_index "categories", ["slug"], name: "index_categories_on_slug", unique: true
 
   create_table "games", force: true do |t|
     t.string   "name"
     t.string   "cover"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "slug"
   end
+
+  add_index "games", ["slug"], name: "index_games_on_slug", unique: true
+
+  create_table "runs", force: true do |t|
+    t.integer  "category_id"
+    t.integer  "user_id"
+    t.string   "title"
+    t.integer  "attempts"
+    t.integer  "offset"
+    t.string   "size"
+    t.integer  "time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "runs", ["category_id"], name: "index_runs_on_category_id"
+  add_index "runs", ["user_id"], name: "index_runs_on_user_id"
+
+  create_table "splits", force: true do |t|
+    t.string   "name"
+    t.integer  "run_id"
+    t.integer  "old"
+    t.integer  "best_run"
+    t.integer  "best_segment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "splits", ["run_id"], name: "index_splits_on_run_id"
 
   create_table "users", force: true do |t|
     t.string   "email"
-    t.string   "handle"
+    t.string   "name"
     t.string   "crypted_password"
     t.string   "password_salt"
     t.string   "persistence_token"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "slug"
   end
+
+  add_index "users", ["slug"], name: "index_users_on_slug", unique: true
 
 end

@@ -1,0 +1,25 @@
+= form_for @split do |f|
+  - if @split.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@split.errors.count, "error")} prohibited this split from being saved:"
+      %ul
+        - @split.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :name
+    = f.text_field :name
+  .field
+    = f.label :run
+    = f.text_field :run
+  .field
+    = f.label :old
+    = f.number_field :old
+  .field
+    = f.label :best_run
+    = f.number_field :best_run
+  .field
+    = f.label :best_segment
+    = f.number_field :best_segment
+  .actions
+    = f.submit 'Save'

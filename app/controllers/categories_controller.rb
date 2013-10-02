@@ -1,51 +1,37 @@
 class CategoriesController < ApplicationController
-  before_action :set_category, only: [:show, :edit, :update, :destroy]
 
-  # GET /categories
-  # GET /categories.json
+  # GET /games/:game_id/categories
+  # GET /games/:game_id/categories.json
   def index
-    @categories = Category.all
+    @categories = @game.categories
   end
 
-  # GET /categories/1
-  # GET /categories/1.json
+  # GET /games/:game_id/categories/:category_id
+  # GET /games/:game_id/categories/:category_id.json
   def show
+    @category = Category.find(params[:id])
+    @game = Game.friendly.find(params[:game_id])
   end
 
-  # GET /categories/new
+  # GET /games/:game_id/categories/new
+  # GET /games/:game_id/categories/new.json
   def new
     @category = Category.new
+    @game = Game.friendly.find(params[:game_id])
   end
 
-  # GET /categories/1/edit
-  def edit
-  end
-
-  # POST /categories
-  # POST /categories.json
+  # POST /games/:game_id/categories/create
+  # POST /games/:game_id/categories/create.json
   def create
-    @category = Category.new(category_params)
+    @game = Game.friendly.find(params[:game_id])
+    @category = @game.categories.create(category_params)
 
     respond_to do |format|
       if @category.save
-        format.html { redirect_to @category, notice: 'Category was successfully created.' }
+        format.html { redirect_to game_category_path(@game, @category), notice: 'Category created.' }
         format.json { render action: 'show', status: :created, location: @category }
       else
         format.html { render action: 'new' }
-        format.json { render json: @category.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /categories/1
-  # PATCH/PUT /categories/1.json
-  def update
-    respond_to do |format|
-      if @category.update(category_params)
-        format.html { redirect_to @category, notice: 'Category was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
         format.json { render json: @category.errors, status: :unprocessable_entity }
       end
     end
@@ -65,10 +51,11 @@ class CategoriesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_category
       @category = Category.find(params[:id])
+      @game = Game.friendly.find(params[:game_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def category_params
-      params.require(:category).permit(:name)
+      params.require(:category).permit(:name, :description)
     end
 end

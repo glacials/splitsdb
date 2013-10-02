@@ -11,7 +11,17 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery-migrate-min
 //= require jquery_ujs
+//= require jquery.ui.all
 //= require turbolinks
 //= require bootstrap
+//= require jquery.filedrop
 //= require_tree .
+
+// from http://stackoverflow.com/a/8141065/392225
+window.setTimeout(function() {
+    $("#notice").fadeTo(500, 0).slideUp(500, function(){
+        $(this).remove(); 
+    });
+}, 5000);

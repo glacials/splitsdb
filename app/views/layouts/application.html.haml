@@ -4,33 +4,68 @@
     %title splitsdb
     = stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true
     = javascript_include_tag "application", "data-turbolinks-track" => true
+    = javascript_include_tag "autocomplete-rails.js"
     = csrf_meta_tags
   %body
-    %nav.navbar.navbar-default{:role => "navigation"}
-      / Brand and toggle get grouped for better mobile display
-      .navbar-header
-        %button.navbar-toggle{"data-target" => ".navbar-ex1-collapse", "data-toggle" => "collapse", :type => "button"}
-          %span.sr-only Toggle navigation
-          %span.icon-bar
-          %span.icon-bar
-          %span.icon-bar
-        %a.navbar-brand{:href => "/"} splitsdb
-      / Collect the nav links, forms, and other content for toggling
-      .collapse.navbar-collapse.navbar-ex1-collapse
-        %ul.nav.navbar-nav
-          %li
-            %a{:href => "/"} Home
-          %li
-            %a{:href => "/games"} Browse
-          %li
-            %a{:href => "/runs/new"} Upload
-        %form.navbar-form.navbar-left{:role => "search"}
-          .form-group
-            %input.form-control{:placeholder => "Search", :type => "text"}/
-          %button.btn.btn-default{:type => "submit"} Submit
-        %ul.nav.navbar-nav.navbar-right
-          %li
-            %a{:href => "/users/new"} Login / Sign up
-      / /.navbar-collapse
-    .container
-      = yield
+    %div#dropzone
+      %nav.navbar-custom.navbar-default.navbar-static-top{:role => "navigation"}
+        .navbar-header
+          %button.navbar-toggle{"data-target" => ".navbar-ex1-collapse", "data-toggle" => "collapse", :type => "button"}
+            %span.sr-only Toggle navigation
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+          %a.navbar-brand{:href => root_path} splitsdb
+        .collapse.navbar-collapse.navbar-ex1-collapse
+          %ul.nav.navbar-nav
+            %li{:class => "#{'active' if current_page?(root_path)}"}
+              %a{:href => root_path} Home
+            %li{:class => "#{'active' if current_page?(games_path)}"}
+              %a{:href => games_path} Browse
+          %ul.nav.navbar-nav.navbar-right
+            - if current_user_session
+              %li{:class => "#{'active' if current_page?(user_path(current_user))}"}
+                %a#user{:href => user_path(current_user), 'data-toggle' => :tooltip, :title => current_user.name, 'data-placement' => :left}
+                  .glyphicon.glyphicon-user
+                  = current_user.name
+              %li
+                %a#logout{:href => logout_path, 'data-toggle' => :tooltip, :title => "Log out", 'data-placement' => :left}
+                  .glyphicon.glyphicon-log-out
+                  Log out
+            - else
+              %li{:class => "#{'active' if current_page?(login_path) or current_page?(signup_path)}"}
+                %a{:href => login_path} Log in / sign up
+      .container
+        - if notice
+          .alert.alert-success#notice
+            .glyphicon.glyphicon-heart
+            = notice
+        - if alert
+          .alert.alert-danger#alert
+            .glyphicon.glyphicon-exclamation-sign
+            = alert
+        = yield
+      :javascript
+        $('#user').tooltip();
+        $('#logout').tooltip();
+        $('#download').popover({
+          html : true,
+          container: 'body',
+          content: function() {
+            return $('#download-popover').html();
+          }
+        })
+        $('#compare').popover({
+          html : true,
+          container: 'body',
+          content: function() {
+            return $('#compare-popover').html();
+          }
+        })
+        $(document).on('click', function (e) {
+          var target = $(event.target);
+          if (!target.is('#download') && !target.is('#compare') && !target.is('input')) {
+            $('#download-popover').siblings('#download').popover('hide');
+            $('#compare-popover').siblings('#compare').popover('hide');
+          }
+        });

@@ -1,4 +1,6 @@
 class Category < ActiveRecord::Base
-  has_many :divisions
-  has_many :games, :through => :divisions
+  belongs_to :game
+  has_many :runs
+  validates_presence_of :game
+  validates_presence_of :name
 end

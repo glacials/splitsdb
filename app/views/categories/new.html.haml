@@ -1,0 +1,3 @@
+%h1 New category for #{@game.name}
+= form_for @category, url: game_category_path(@game, @category) do |f|
+  = render 'form'
