@@ -4,7 +4,7 @@
     - if @user == current_user
       %small
         %a{:href => edit_user_path(@user)}
-          .glyphicon.glyphicon-edit
+          .glyphicon.glyphicon-pencil
 .row
   %h2 Games run by #{@user.name}
   - @user.games.each do |game|

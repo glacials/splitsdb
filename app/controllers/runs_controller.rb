@@ -1,6 +1,26 @@
 class RunsController < ApplicationController
   before_action :set_run, only: [:show, :edit, :update, :destroy]
 
+  def download_exact
+    @game = Game.friendly.find(params[:game_id])
+    @category = Category.find(params[:category_id])
+    @run = Run.find(params[:id])
+    wsplit_file = 'Title=' + @run.title + "\n"
+    wsplit_file += 'Attempts=' + @run.attempts.to_s + "\n"
+    wsplit_file += 'Offset=' + @run.offset.to_s + "\n"
+    wsplit_file += 'Size=' + @run.size + "\n"
+    icons_string = 'Icons='
+    @run.splits.each do |split|
+      wsplit_file += split.name + ',0,' + split.best_segment + ',' + split.best_run + "\n"
+      icons_string += '"",'
+    end
+    wsplit_file += icons_string[0..-1]
+    render text: wsplit_file, content_type: 'text/csv'
+  end
+
+  def download_blank
+  end
+
   def compare
     @game = Game.friendly.find(params[:game_id])
     @category = Category.find(params[:category_id])
@@ -73,12 +93,12 @@ class RunsController < ApplicationController
     params[:run][:file].read.each_line do |line|
       if line.start_with?('Title=')
         @run.title = line.sub('Title=', '')
-      elsif line.start_with?('Attempts=')
+      elsif line.start_with?('Attempts=').chomp
         @run.attempts = line.sub('Attempts=', '')
       elsif line.start_with?('Offset=')
-        @run.offset = line.sub('Offset=', '')
+        @run.offset = line.sub('Offset=', '').chomp
       elsif line.start_with?('Size=')
-        @run.size = line.sub('Size=', '')
+        @run.size = line.sub('Size=', '').chomp
       elsif line.start_with?('Icons=')
         # nothing to do
       else

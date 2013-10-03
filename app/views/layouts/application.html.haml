@@ -21,13 +21,13 @@
             %li{:class => "#{'active' if current_page?(root_path)}"}
               %a{:href => root_path} Home
             %li{:class => "#{'active' if current_page?(games_path)}"}
-              %a{:href => games_path} Browse
+              %a{:href => games_path} Games
           %ul.nav.navbar-nav.navbar-right
             - if current_user_session
               %li{:class => "#{'active' if current_page?(user_path(current_user))}"}
                 %a#user{:href => user_path(current_user), 'data-toggle' => :tooltip, :title => current_user.name, 'data-placement' => :left}
                   .glyphicon.glyphicon-user
-                  = current_user.name
+                  Me
               %li
                 %a#logout{:href => logout_path, 'data-toggle' => :tooltip, :title => "Log out", 'data-placement' => :left}
                   .glyphicon.glyphicon-log-out
@@ -46,8 +46,8 @@
             = alert
         = yield
       :javascript
-        $('#user').tooltip();
-        $('#logout').tooltip();
+        //$('#user').tooltip();
+        //$('#logout').tooltip();
         $('#download').popover({
           html : true,
           container: 'body',
@@ -62,10 +62,3 @@
             return $('#compare-popover').html();
           }
         })
-        $(document).on('click', function (e) {
-          var target = $(event.target);
-          if (!target.is('#download') && !target.is('#compare') && !target.is('input')) {
-            $('#download-popover').siblings('#download').popover('hide');
-            $('#compare-popover').siblings('#compare').popover('hide');
-          }
-        });
