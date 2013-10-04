@@ -9,6 +9,7 @@ Splitsdb::Application.routes.draw do
   get '/users/:id/edit' => 'users#edit', :as => :edit_user
   get '/:game_id/:category_id/runs/:id/compare/:compare_id' => 'runs#show', :as => :compare
   get '/:game_id/:category_id/runs/:id/download' => 'runs#download_exact'
+  get '/:game_id/:category_id/runs/:id/delete' => 'runs#destroy'
   #get '/:game_id/:category_id/runs/:id/download-route' => 'runs#download_blank'
 
   root 'static_pages#home'

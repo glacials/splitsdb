@@ -4,8 +4,8 @@ class CreateSplits < ActiveRecord::Migration
       t.string :name
       t.references :run, index: true
       t.integer :old
-      t.integer :best_run
-      t.integer :best_segment
+      t.float :best_run
+      t.float :best_segment
 
       t.timestamps
     end
