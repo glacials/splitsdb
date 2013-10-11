@@ -2,23 +2,25 @@ class RunsController < ApplicationController
   before_action :set_run, only: [:show, :edit, :update, :destroy]
 
   def download_exact
-    @game = Game.friendly.find(params[:game_id])
-    @category = Category.find(params[:category_id])
-    @run = Run.find(params[:id])
+    set_run
     wsplit_file = 'Title=' + @run.title + "\n"
     wsplit_file += 'Attempts=' + @run.attempts.to_s + "\n"
     wsplit_file += 'Offset=' + @run.offset.to_s + "\n"
     wsplit_file += 'Size=' + @run.size + "\n"
     icons_string = 'Icons='
     @run.splits.each do |split|
-      wsplit_file += split.name + ',0,' + split.best_segment + ',' + split.best_run + "\n"
+      wsplit_file += split.name + ',0,' + split.best_run_seconds.to_s + ',' + split.best_segment_seconds.to_s + "\n"
       icons_string += '"",'
     end
-    wsplit_file += icons_string[0..-1]
-    render text: wsplit_file, content_type: 'text/csv'
+    wsplit_file += icons_string[0..-2]
+    filename = @run.user.name.downcase + '-' + @game.name.downcase + '-' + @category.name.downcase + '.wsplit'
+    filename.gsub!(' ', '-')
+    headers['Content-Disposition'] = 'attachment; filename="' + filename + '"'
+    render text: wsplit_file
   end
 
   def download_blank
+    # todo: see what a blank splits file looks like
   end
 
   def compare

@@ -21,7 +21,7 @@
             %span.glyphicon.glyphicon-download-alt
             Get splits
         #download-popover{:style => 'display: none;'}
-          %a.btn.btn-primary{:type => :button, :href => '#'}
+          %a.btn.btn-primary{:type => :button, :href => @run.id.to_s + '/download'}
             .glyphicon.glyphicon-download-alt
             Exact copy
           %a.btn.btn-primary{:type => :button, :href => '#'}
@@ -79,6 +79,25 @@
               - else
                 %span.text-muted
                   (0)
+.row
+  .col-md-12
+    %h2
+      - if @compare.present?
+        Compare splits
+      - else
+        Other runs in this category
+
+      - if @category.runs.where.not(id: @run.id).count == 0
+        %i Sorry, nobody else runs this game/category. When they do, their splits will show up here.
+      - else
+        - colors = [:success, :warning, :danger, :default]
+        - color = 0
+        .progress
+          - @run.splits.each do |split|
+            .progress-bar{:style  => 'width: ' + (split.best_segment_seconds.to_f*100 / @run.time_seconds).round(2).to_s + '%;', :class => 'progress-bar-' + color}
+              %span.sr-only
+                10% Complete (danger)
+            - color = (color + 1) % colors.size
 .row
   .col-md-12
     %h2
