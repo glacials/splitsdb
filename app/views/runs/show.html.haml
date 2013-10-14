@@ -43,8 +43,7 @@
           .pull-left
             %span.glyphicon.glyphicon-facetime-video
             Video
-    - if current_user == @run.user
-      .row
+      - if current_user == @run.user
         .col-md-6
           %a.btn.btn-default{:class => 'button', :style => 'font-size: 16px; width: 100%;', :href => game_category_run_path(@game, @category, @run) + '/delete'}
             .pull-left
@@ -129,4 +128,4 @@
             .col-md-1{style: 'border-right: 1px solid #ccc; text-align: right; padding-right: 4px;'}
               = Time.at(max/12*interval).gmtime.strftime('%-k:%M:%S')
 %footer
-  test
+  %br

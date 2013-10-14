@@ -31,11 +31,11 @@ class GamesController < ApplicationController
   # POST /games
   # POST /games.json
   def create
-    @game = Game.new(game_params)
+    @game = Game.create(game_params)
 
     respond_to do |format|
       if @game.save
-        format.html { redirect_to @game, notice: 'Game created.' }
+        format.html { redirect_to game_path(@game), notice: 'Game created.' }
         format.json { render action: 'show', status: :created, location: @game }
       else
         format.html { render action: 'new' }
@@ -63,7 +63,7 @@ class GamesController < ApplicationController
   def destroy
     @game.destroy
     respond_to do |format|
-      format.html { redirect_to games_url }
+      format.html { redirect_to games_path, notice: 'Game deleted.' }
       format.json { head :no_content }
     end
   end

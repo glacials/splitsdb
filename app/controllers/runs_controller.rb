@@ -113,7 +113,7 @@ class RunsController < ApplicationController
     end
     respond_to do |format|
       if @run.save
-        format.html { redirect_to game_category_run_path(@game, @category, @run), notice: 'Run created.' }
+        format.html { redirect_to game_category_run_path(@run.game, @run.category, @run), notice: 'Run created.' }
         format.json { render action: 'show', status: :created, location: @run }
       else
         format.html { render action: 'new' }

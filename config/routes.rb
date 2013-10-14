@@ -4,9 +4,11 @@ Splitsdb::Application.routes.draw do
   get '/logout' => 'user_sessions#destroy'
   get '/upload' => 'runs#new'
   get '/games'  => 'games#index'
+  post '/games' => 'games#create'
 
   get '/users/:id' => 'users#show', :as => :user
   get '/users/:id/edit' => 'users#edit', :as => :edit_user
+  get '/:id/delete' => 'games#destroy'
   get '/:game_id/:category_id/runs/:id/compare/:compare_id' => 'runs#show', :as => :compare
   get '/:game_id/:category_id/runs/:id/download' => 'runs#download_exact'
   get '/:game_id/:category_id/runs/:id/delete' => 'runs#destroy'

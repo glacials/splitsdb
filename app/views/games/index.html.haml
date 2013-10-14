@@ -1,12 +1,14 @@
 %h1 Games
-- @games.each do |game|
-  .col-md-3
-    %a.thumbnail{:href => game_path(game)}
-      - if game.cover.present?
-        %img.img-responsive{:alt => game.name, "src" => "#{game.cover}"}/
-      - else
-        %img.img-responsive
-          %div{:style => 'display: block; font-size: 40px; text-decoration: none; word-wrap: break-word;'} #{game.name}
-.col-md-3
-  %img.img-responsive
-    %a.thumbnail{:href => new_game_path, :style => 'height: 348px; font-size: 200px; text-align: center;  text-decoration: none;'} +
+.row
+  - @games.each do |game|
+    .col-md-3
+      %a.thumbnail{:href => game_path(game)}
+        - if game.cover.present?
+          %img.img-responsive{:alt => game.name, "src" => "#{game.cover}"}/
+        - else
+          %img.img-responsive
+            %div{:style => 'display: block; font-size: 40px; text-decoration: none; word-wrap: break-word;'} #{game.name}
+.row
+  .col-md-3{style: 'margin-top: 10px;'}
+    %img.img-responsive
+      %a.thumbnail{:href => new_game_path, :style => 'height: 348px; font-size: 200px; text-align: center;  text-decoration: none;'} +
