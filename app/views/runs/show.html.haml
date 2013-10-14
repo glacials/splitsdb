@@ -16,7 +16,7 @@
       %a.thumbnail{:href => game_path, :style => 'height: 357px; width: 350px; font-size: 200px; text-align: center; margin-bottom: 5px; text-decoration: none;'} +
     .row{:style => 'margin-bottom: 10px;'}
       .col-md-6
-        %button.btn.btn-default#download{:class => 'button', :style => 'cursor: pointer; font-size: 16px; width: 100%;', 'data-toggle' => :popover, 'data-placement' => :right, 'data-html' => true, :title => 'Want an exact copy or just the route?'}
+        %button.btn.btn-default#download{:class => 'button', :style => 'cursor: pointer; font-size: 16px; width: 100%;', 'data-toggle' => :popover, 'data-placement' => :right, :title => 'Want an exact copy or just the route?'}
           .pull-left
             %span.glyphicon.glyphicon-download-alt
             Get splits
@@ -28,7 +28,7 @@
             .glyphicon.glyphicon-download-alt
             Blank route
       .col-md-6
-        %button.btn.btn-default#compare{:class => 'button', :style => 'cursor: pointer; font-size: 16px; width: 100%;', 'data-toggle' => :popover, 'data-placement' => :top, 'data-html' => true, :title => 'Enter another run URL or numeric ID:'}
+        %button.btn.btn-default#compare{:class => 'button', :style => 'cursor: pointer; font-size: 16px; width: 100%;', 'data-toggle' => :popover, 'data-placement' => :top, :title => 'Enter another run URL or numeric ID:'}
           .pull-left
             %span.glyphicon.glyphicon-stats
             Compare
@@ -37,12 +37,19 @@
             %input{:type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token}
             .form-group
               %input.form-control{:type => :text, :size => 35, :name => :compare_id}
-    .row
+    .row{style: 'margin-bottom: 10px;'}
       .col-md-6
         %button.btn.btn-default{:class => 'button', :style => 'cursor: pointer; font-size: 16px; width: 100%;'}
           .pull-left
             %span.glyphicon.glyphicon-facetime-video
             Video
+    - if current_user == @run.user
+      .row
+        .col-md-6
+          %a.btn.btn-default{:class => 'button', :style => 'font-size: 16px; width: 100%;', :href => game_category_run_path(@game, @category, @run) + '/delete'}
+            .pull-left
+              %span.glyphicon.glyphicon-remove
+              Delete
   .col-md-9
     %table.table.table-striped{:style => "border-top: none;"}
       %tr{:style => "border-top: none;"}
@@ -86,61 +93,40 @@
         Compare splits
       - else
         Other runs in this category
-
-      - if @category.runs.where.not(id: @run.id).count == 0
-        %i Sorry, nobody else runs this game/category. When they do, their splits will show up here.
-      - else
-        - colors = [:success, :warning, :danger, :default]
-        - color = 0
-        .progress
-          - @run.splits.each do |split|
-            .progress-bar{:style  => 'width: ' + (split.best_segment_seconds.to_f*100 / @run.time_seconds).round(2).to_s + '%;', :class => 'progress-bar-' + color}
-              %span.sr-only
-                10% Complete (danger)
-            - color = (color + 1) % colors.size
-.row
-  .col-md-12
-    %h2
-      - if @compare.present?
-        Compare splits
-      - else
-        Other runs in this category
-
     - if @category.runs.where.not(id: @run.id).count == 0
       %i Sorry, nobody else runs this game/category. When they do, their splits will show up here.
     - else
-      %script{:src => "https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization', 'version':'1','packages':['timeline']}]}", :type => "text/javascript"}
-      %script{:type => "text/javascript"}
-        google.setOnLoadCallback(drawChart);
-        function drawChart() {
-        var container = document.getElementById('stats_compare');
-        var chart = new google.visualization.Timeline(container);
-        var dataTable = new google.visualization.DataTable();
-        dataTable.addColumn({ type: 'string', id: 'Run' });
-        dataTable.addColumn({ type: 'string', id: 'Split' });
-        dataTable.addColumn({ type: 'date', id: 'Start' });
-        dataTable.addColumn({ type: 'date', id: 'End' });
-        dataTable.addRows([
-        - last_seg = '0, 0, 0, 0, 0, 0'
-        - @run.splits.each do |split|
-          [ "This run", "#{split.name}", new Date(#{last_seg}), new Date(0, 0, 0, #{split.best_run "%-k, %M, %S"}) ],
-          - last_seg = '0, 0, 0, ' + split.best_run("%-k, %M, %S")
-        - last_seg = '0, 0, 0, 0, 0, 0'
-        - if @compare.present?
-          - @compare.splits.each do |split|
-            [ "#{@compare.user.name}'s #{@compare.time}", "#{split.name}", new Date(#{last_seg}), new Date(0, 0, 0, #{split.best_run "%-k, %M, %S"}) ],
-            - last_seg = '0, 0, 0, ' + split.best_run("%-k, %M, %S")
-        - else
-          - @category.runs.where.not(id: @run.id).each do |run|
-            - run.splits.each do |split|
-              [ "#{run.user.name}'s #{run.time}", "#{split.name}", new Date(#{last_seg}), new Date(0, 0, 0, #{split.best_run "%-k, %M, %S"}) ],
-              - last_seg = '0, 0, 0, ' + split.best_run("%-k, %M, %S")
-        ]);
-        var options = {
-        timeline: { rowLabelStyle: {fontName: 'Arial', fontSize: 14, color: '#603913' },
-        barLabelStyle: { fontName: 'Arial', fontSize: 10 } },
-        avoidOverlappingGridLines: false,
-        };
-        chart.draw(dataTable, options);
-        }
-      %div{:id => "stats_compare", :style => "width: 100%; height: 180px;"}
+      - colors = ['success', 'warning', 'danger', 'default']
+      - c = 0
+      - max = @category.runs.max_by(&:time_seconds).time_seconds
+      .row
+        .col-md-2{style: 'text-align: right;'}
+          This run
+        .col-md-10
+          .progress
+            - @run.splits.each do |split|
+              .progress-bar.breakdown{:style  => 'text-align: left; padding-left: 5px; width: ' + (100*split.best_segment_seconds/max).to_s + '%;', :class => 'progress-bar-' + colors[c], 'data-toggle' => :popover, :title => split.name, 'data-trigger' => :hover, 'data-placement' => :top, 'data-content' => split.best_segment}
+                %small
+                  = split.name
+              - c = (c + 1) % colors.length
+      - @category.runs.where.not(id: @run.id).each do |run|
+        - c = 0
+        .row
+          .col-md-2{style: 'text-align: right;'}
+            = run.user.name + '\'s ' + run.time
+          .col-md-10
+            .progress
+              - run.splits.each do |split|
+                .progress-bar.breakdown{:style  => 'text-align: left; padding-left: 5px; width: ' + (100*split.best_segment_seconds/max).to_s + '%;', :class => 'progress-bar-' + colors[c], 'data-toggle' => :popover, :title => split.name, 'data-trigger' => :hover, 'data-placement' => :top, 'data-content' => split.best_segment}
+                  %small
+                    = split.name
+                - c = (c + 1) % colors.length
+      .row
+        .col-md-2{style: 'border-right: 1px solid #ccc; text-align: right; padding-right: 4px; position: relative; right: -15px;'}
+          0:00:00
+        .col-md-10{style: 'padding-left: 0;'}
+          - for interval in 1..12
+            .col-md-1{style: 'border-right: 1px solid #ccc; text-align: right; padding-right: 4px;'}
+              = Time.at(max/12*interval).gmtime.strftime('%-k:%M:%S')
+%footer
+  test

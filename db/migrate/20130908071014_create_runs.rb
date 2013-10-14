@@ -7,7 +7,6 @@ class CreateRuns < ActiveRecord::Migration
       t.integer :attempts
       t.integer :offset
       t.string :size
-      t.integer :time
 
       t.timestamps
     end

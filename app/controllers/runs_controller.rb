@@ -91,12 +91,11 @@ class RunsController < ApplicationController
     @run = @category.runs.new()
     @run.category = @category
     @run.user = current_user
-    max_time = 0
     params[:run][:file].read.each_line do |line|
       if line.start_with?('Title=')
         @run.title = line.sub('Title=', '')
-      elsif line.start_with?('Attempts=').chomp
-        @run.attempts = line.sub('Attempts=', '')
+      elsif line.start_with?('Attempts=')
+        @run.attempts = line.sub('Attempts=', '').chomp
       elsif line.start_with?('Offset=')
         @run.offset = line.sub('Offset=', '').chomp
       elsif line.start_with?('Size=')
@@ -110,13 +109,8 @@ class RunsController < ApplicationController
         split.old = s[1].to_i
         split.best_run = s[2].to_i
         split.best_segment = s[3].to_i
-        if split.best_run > max_time
-          max_time = split.best_run
-        end
       end
     end
-    @run.time = max_time
-
     respond_to do |format|
       if @run.save
         format.html { redirect_to game_category_run_path(@game, @category, @run), notice: 'Run created.' }
@@ -149,10 +143,14 @@ class RunsController < ApplicationController
   # DELETE /runs/1
   # DELETE /runs/1.json
   def destroy
-    @run.destroy
-    respond_to do |format|
-      format.html { redirect_to runs_url }
-      format.json { head :no_content }
+    if current_user == @run.user
+      @run.destroy
+      respond_to do |format|
+        format.html { redirect_to game_category_path(@game, @category), notice: 'Run deleted.' }
+        format.json { head :no_content }
+      end
+    else
+      redirect_to game_category_run_path(@game, @category, @run), alert: 'You don\'t own that run.'
     end
   end
 
