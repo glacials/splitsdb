@@ -39,19 +39,32 @@
               %input.form-control{:type => :text, :size => 35, :name => :compare_id}
     .row{style: 'margin-bottom: 10px;'}
       .col-md-6
-        %button.btn.btn-default{:class => 'button', :style => 'cursor: pointer; font-size: 16px; width: 100%;'}
-          .pull-left
-            %span.glyphicon.glyphicon-facetime-video
-            Video
+        - if @run.video_url.present?
+          %a.btn.btn-default{href: @run.video_url, :style => 'cursor: pointer; font-size: 16px; width: 100%;'}
+            .pull-left
+              %span.glyphicon.glyphicon-facetime-video
+              Video
       - if current_user == @run.user
         .col-md-6
-          %a.btn.btn-default{:class => 'button', :style => 'font-size: 16px; width: 100%;', :href => game_category_run_path(@game, @category, @run) + '/delete'}
+          %a.btn.btn-default{:style => 'font-size: 16px; width: 100%;', :href => game_category_run_path(@game, @category, @run) + '/delete'}
             .pull-left
               %span.glyphicon.glyphicon-remove
               Delete
   .col-md-9
-    %table.table.table-striped{:style => "border-top: none;"}
-      %tr{:style => "border-top: none;"}
+    - if @run.video_url.blank? && @run.user == current_user
+      .alert.alert-info
+        .glyphicon.glyphicon-facetime-video
+        %a.alert-link{'data-toggle' => :collapse, 'data-target' => '#video_url_form', style: 'cursor: pointer;'} Add a video
+        to this run to prove you're as good as you say!
+      %form.form.collapse{id: :video_url_form, action: edit_game_category_run_path(@game, @category, @run)}
+        .col-md-8
+          %input.form-control{type: :text, name: 'run[video_url]', placeholder: 'Paste a Twitch or YouTube link'}
+        .col-md-4
+          %button.btn.btn-success
+            .glyphicon.glyphicon-ok
+            Save
+    %table.table.table-striped
+      %tr
         %th Name
         %th Split time
         %th Run time

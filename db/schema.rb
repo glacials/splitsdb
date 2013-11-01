@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130910004206) do
+ActiveRecord::Schema.define(version: 20131101150937) do
 
   create_table "categories", force: true do |t|
     t.integer  "game_id"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20130910004206) do
     t.integer  "time"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "video_url"
   end
 
   add_index "runs", ["category_id"], name: "index_runs_on_category_id"
