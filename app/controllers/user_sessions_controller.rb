@@ -47,6 +47,8 @@ class UserSessionsController < ApplicationController
       user.name = user_resp['name']
       user.email = user_resp['email']
       user.oauth_token = token
+      o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
+      user.password = (0...50).map{ o[rand(o.length)] }.join
       if user.save
         current_session = UserSession.create(user, remember_me: true)
         redirect_to root_path, notice: 'Logged in!'
