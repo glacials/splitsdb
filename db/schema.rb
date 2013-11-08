@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131106234848) do
+ActiveRecord::Schema.define(version: 20131108035049) do
 
   create_table "authentications", force: true do |t|
     t.integer  "user_id"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 20131106234848) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "video_url"
+    t.string   "comment"
   end
 
   add_index "runs", ["category_id"], name: "index_runs_on_category_id"

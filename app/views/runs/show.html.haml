@@ -56,13 +56,30 @@
         .glyphicon.glyphicon-facetime-video
         %a.alert-link{'data-toggle' => :collapse, 'data-target' => '#video_url_form', style: 'cursor: pointer;'} Add a video
         to this run to prove you're as good as you say!
-      %form.form.collapse{id: :video_url_form, action: edit_game_category_run_path(@game, @category, @run)}
-        .col-md-8
-          %input.form-control{type: :text, name: 'run[video_url]', placeholder: 'Paste a Twitch or YouTube link'}
-        .col-md-4
-          %button.btn.btn-success
-            .glyphicon.glyphicon-ok
-            Save
+        %form.form.collapse#video_url_form{action: edit_game_category_run_path(@game, @category, @run), style: 'overflow: hidden; margin-top: 10px;'}
+          = token_tag form_authenticity_token
+          .col-md-8
+            %input.form-control{method: :post, type: :text, name: 'run[video_url]', placeholder: 'Paste a Twitch or YouTube link'}
+          .col-md-4
+            %button.btn.btn-success
+              .glyphicon.glyphicon-ok
+              Save
+    - if @run.comment.blank? && @run.user == current_user
+      .alert.alert-info
+        .glyphicon.glyphicon-facetime-video
+        %a.alert-link{'data-toggle' => :collapse, 'data-target' => '#comment_form', style: 'cursor: pointer;'} Add a comment
+        to this run if you want it to be more helpful to others!
+        %form.form.collapse#comment_form{method: :post, action: edit_game_category_run_path(@game, @category, @run), style: 'overflow: hidden; margin-top: 10px;'}
+          = token_tag form_authenticity_token
+          .col-md-8
+            %textarea.form-control{type: :text, name: 'run[comment]', placeholder: 'Add a comment'}
+          .col-md-4
+            %button.btn.btn-success
+              .glyphicon.glyphicon-ok
+              Save
+    - else
+      .comment{style: 'margin-bottom: 20px;'}
+        = @run.comment
     %table.table.table-striped
       %tr
         %th Name

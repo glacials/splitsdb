@@ -18,6 +18,7 @@ Splitsdb::Application.routes.draw do
   get '/:game_id/:category_id/runs/:id/download' => 'runs#download_exact'
   get '/:game_id/:category_id/runs/:id/delete' => 'runs#destroy'
   #get '/:game_id/:category_id/runs/:id/download-route' => 'runs#download_blank'
+  post '/:game_id/:category_id/runs/:id/edit' => 'runs#edit'
 
   root 'static_pages#home'
 

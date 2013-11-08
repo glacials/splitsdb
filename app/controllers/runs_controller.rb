@@ -69,12 +69,22 @@ class RunsController < ApplicationController
   end
 
   def edit
-    @run = Run.find(params[:id])
-    if run_params[:video_url].present?
-      @run.video_url = run_params[:video_url]
-      respond_to do |format|
-        if @run.save
-          format.html { redirect_to game_category_run_path(@run.game, @run.category, @run), notice: 'Video link added.' }
+    if current_user == @run.user
+      @run = Run.find(params[:id])
+      if run_params[:video_url].present?
+        @run.video_url = run_params[:video_url]
+        respond_to do |format|
+          if @run.save
+            format.html { redirect_to game_category_run_path(@run.game, @run.category, @run), notice: 'Video link added.' }
+          end
+        end
+      end
+      if run_params[:comment].present?
+        @run.comment = run_params[:comment]
+        respond_to do |format|
+          if @run.save
+            format.html { redirect_to game_category_run_path(@run.game, @run.category, @run), notice: 'Comment added.' }
+          end
         end
       end
     end
@@ -166,6 +176,6 @@ class RunsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def run_params
-      params.require(:run).permit(:game, :category, :video_url)
+      params.require(:run).permit(:game, :category, :video_url, :comment)
     end
 end
