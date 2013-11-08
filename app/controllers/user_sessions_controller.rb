@@ -53,7 +53,7 @@ class UserSessionsController < ApplicationController
         current_session = UserSession.create(user, remember_me: true)
         redirect_to root_path, notice: 'Logged in!'
       else
-        redirect_to login_path, alert: 'A problem occurred trying to log you in via Twitch. The error reported was ' + user.errors.to_s + '.'
+        redirect_to login_path, alert: 'A problem occurred trying to log you in via Twitch. The error reported was ' + user.errors.first.to_s + '.'
       end
     else
       user.oauth_token = token
