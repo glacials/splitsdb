@@ -40,7 +40,7 @@
     .row{style: 'margin-bottom: 10px;'}
       .col-md-6
         - if @run.video_url.present?
-          %a.btn.btn-default{href: @run.video_url, :style => 'cursor: pointer; font-size: 16px; width: 100%;'}
+          %a.btn.btn-default{href: @run.video_url, :style => 'cursor: pointer; font-size: 16px; width: 100%;', target: :_blank}
             .pull-left
               %span.glyphicon.glyphicon-facetime-video
               Video
