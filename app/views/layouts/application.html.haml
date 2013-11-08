@@ -8,33 +8,33 @@
     = csrf_meta_tags
   %body
     %div#dropzone
-      %nav.navbar-custom.navbar-default.navbar-static-top{:role => "navigation"}
+      %nav.navbar-custom.navbar-default.navbar-static-top{role: "navigation"}
         .navbar-header
-          %button.navbar-toggle{"data-target" => ".navbar-ex1-collapse", "data-toggle" => "collapse", :type => "button"}
+          %button.navbar-toggle{"data-target" => ".navbar-ex1-collapse", "data-toggle" => "collapse", type: "button"}
             %span.sr-only Toggle navigation
             %span.icon-bar
             %span.icon-bar
             %span.icon-bar
-          %a.navbar-brand{:href => root_path} splitsdb
+          %a.navbar-brand{href: root_path} splitsdb
         .collapse.navbar-collapse.navbar-ex1-collapse
           %ul.nav.navbar-nav
-            %li{:class => "#{'active' if current_page?(root_path)}"}
-              %a{:href => root_path} Home
-            %li{:class => "#{'active' if current_page?(games_path)}"}
-              %a{:href => games_path} Games
+            %li{class: "#{'active' if current_page?(root_path)}"}
+              %a{href: root_path} Home
+            %li{class: "#{'active' if current_page?(games_path)}"}
+              %a{href: games_path} Games
           %ul.nav.navbar-nav.navbar-right
             - if current_user_session
-              %li{:class => "#{'active' if current_page?(user_path(current_user))}"}
-                %a#user{:href => user_path(current_user), 'data-toggle' => :tooltip, :title => current_user.name, 'data-placement' => :left}
+              %li{class: "#{'active' if current_page?(user_path(current_user))}"}
+                %a#user{href: user_path(current_user), 'data-toggle' => :tooltip, title: current_user.name, 'data-placement' => :left}
                   .glyphicon.glyphicon-user
                   = current_user.name
               %li
-                %a#logout{:href => logout_path, 'data-toggle' => :tooltip, :title => "Log out", 'data-placement' => :left}
+                %a#logout{href: logout_path, 'data-toggle' => :tooltip, :title => "Log out", 'data-placement' => :left}
                   .glyphicon.glyphicon-log-out
                   Log out
             - else
-              %li{:class => "#{'active' if current_page?(login_path) or current_page?(signup_path)}"}
-                %a{:href => login_path} Log in / sign up
+              %li{class: "#{'active' if current_page?(login_path) or current_page?(signup_path)}"}
+                %a{href: login_path} Log in / sign up
       .container
         - if notice
           .alert.alert-success#notice
@@ -66,7 +66,7 @@
           html : true,
           container: 'body',
         })
-%footer{style: 'margin-bottom: 20px; margin-right: 20px;'}
+%footer{style: 'margin-bottom: 40px; margin-right: 20px;'}
   %small.pull-right
     .glyphicon.glyphicon-bullhorn
     Find a bug?
