@@ -66,7 +66,7 @@
               Save
     - if @run.comment.blank? && @run.user == current_user
       .alert.alert-info
-        .glyphicon.glyphicon-facetime-video
+        .glyphicon.glyphicon-comment
         %a.alert-link{'data-toggle' => :collapse, 'data-target' => '#comment_form', style: 'cursor: pointer;'} Add a comment
         to this run if you want it to be more helpful to others!
         %form.form.collapse#comment_form{method: :post, action: edit_game_category_run_path(@game, @category, @run), style: 'overflow: hidden; margin-top: 10px;'}
