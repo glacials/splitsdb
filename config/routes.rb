@@ -1,5 +1,10 @@
 Splitsdb::Application.routes.draw do 
+  resources :authentications
+
   get '/login'  => 'users#new'
+  get '/login/twitch'      => 'user_sessions#twitch_login'
+  get '/login/twitch/auth' => 'user_sessions#twitch_auth'
+
   get '/signup' => 'users#new'
   get '/logout' => 'user_sessions#destroy'
   get '/upload' => 'runs#new'
@@ -28,4 +33,5 @@ Splitsdb::Application.routes.draw do
   end
 
   post '/:game_id/:category_id/runs/:id' => 'runs#compare'
+#  match '/auth/:provider/callback' => 'authentications#create'
 end

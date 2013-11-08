@@ -1,5 +1,45 @@
-- if request.fullpath == '/signup'
-  %h1 Sign up
-- else
-  %h1 Log in / sign up
-= render 'form'
+.col-md-6
+  - if request.fullpath == '/signup'
+    %h1#title Sign up
+  - else
+    %h1#title Log in / sign up
+
+  = form_for @user, url: {action: "create"} do |f|
+    - if @user.errors.any?
+      .alert.alert-danger
+        %b= "#{pluralize(@user.errors.count, "error")} prohibited this user from being saved:"
+        %ul
+          - @user.errors.full_messages.each do |msg|
+            %li= msg
+    .form-group
+      %input.form-control.input-lg{:name => "user[email]", :placeholder => "Email", :type => "text", :autofocus => (request.fullpath == '/signup' || request.fullpath == '/login'), :value => @user.email }/
+    .form-group
+      %input.form-control{:name => "user[password]", :placeholder => "Password", :type => "password"}/
+    - if !current_user.present?
+      .radio
+        %label
+          - if request.fullpath != '/signup'
+            %input#optionsRadios1{:checked => "", :name => "user[action]", :type => "radio", :value => "login", :onclick => "$('h1#title').html('Log in'); document.getElementById('sign-up').style.display = 'none'; document.getElementById('submit').value = 'Log in '; window.history.replaceState('', 'Title', 'login');"}/
+          - else
+            %input#optionsRadios1{:name => "user[action]", :type => "radio", :value => "login", :onclick => "$('h1#title').html('Log in'); document.getElementById('sign-up').style.display = 'none'; document.getElementById('submit').value = 'Log in '; window.history.replaceState('', 'Title', 'login');"}/
+          I have an account and want to log in
+      .radio
+        %label
+          - if request.fullpath == '/signup'
+            %input#optionsRadios2{:checked => "", :name => "user[action]", :type => "radio", :value => "signup", :onclick => "$('h1#title').html('Sign up'); document.getElementById('sign-up').style.display = 'block'; document.getElementById('submit').value = 'Sign up'; window.history.replaceState('', 'Title', 'signup');"}/
+          - else
+            %input#optionsRadios2{:name => "user[action]", :type => "radio", :value => "signup", :onclick => "$('h1#title').html('Sign up'); document.getElementById('sign-up').style.display = 'block'; document.getElementById('submit').value = 'Sign up'; window.history.replaceState('', 'Title', 'signup');"}/
+          I want to make a new account
+    #sign-up{:style => "#{'display: none;' if request.fullpath != '/signup' && !current_user}"}
+      .form-group
+        %input.form-control{:name => "user[password_confirmation]", :placeholder => "Confirm password", :type => "password"}/
+      .form-group
+        %input.form-control{:name => "user[name]", :placeholder => "Choose a name", :type => "text", :value => @user.name}/
+    .actions
+      %input#submit.btn.btn-default{:name => :commit, :type => :submit, :value => "#{request.fullpath == '/signup' ? 'Sign up' : request.fullpath == '/login' ? 'Log in' : 'Update'}"}
+.col-md-6
+  %h1 Log in with Twitch
+  %center{style: 'margin-top: 60px;'}
+    %a.twitch-button{href: '/login/twitch'}
+      %img{src: 'http://s.jtvnw.net/jtv_user_pictures/hosted_images/GlitchIcon_white.png', style: 'width: 18px; height: 18px; margin-right: 2px;'}
+      Log in with Twitch

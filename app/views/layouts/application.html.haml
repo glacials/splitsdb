@@ -27,7 +27,7 @@
               %li{:class => "#{'active' if current_page?(user_path(current_user))}"}
                 %a#user{:href => user_path(current_user), 'data-toggle' => :tooltip, :title => current_user.name, 'data-placement' => :left}
                   .glyphicon.glyphicon-user
-                  Me
+                  = current_user.name
               %li
                 %a#logout{:href => logout_path, 'data-toggle' => :tooltip, :title => "Log out", 'data-placement' => :left}
                   .glyphicon.glyphicon-log-out

@@ -31,16 +31,10 @@ end
 
 gem 'bootstrap-sass', github: 'thomas-mcdonald/bootstrap-sass', branch: '3'
 gem 'haml-rails'
-gem 'authlogic'
 gem 'rails3-jquery-autocomplete'
 gem 'jquery-migrate-rails', '~> 1.2.1'
 gem 'friendly_id', '5.0.0.rc1'
 
-# Use unicorn as the app server
-# gem 'unicorn'
+gem 'authlogic'
 
-# Use Capistrano for deployment
-# gem 'capistrano', group: :development
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]
+gem 'httparty'

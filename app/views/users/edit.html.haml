@@ -1,3 +1,4 @@
 %h1 Edit account info
 
-= render 'form'
+= form_for @user, url: {action: :update} do |f|
+  .form-group

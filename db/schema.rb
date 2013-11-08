@@ -11,7 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131101150937) do
+ActiveRecord::Schema.define(version: 20131106234848) do
+
+  create_table "authentications", force: true do |t|
+    t.integer  "user_id"
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "index"
+    t.string   "create"
+    t.string   "destroy"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "categories", force: true do |t|
     t.integer  "game_id"
@@ -72,8 +83,11 @@ ActiveRecord::Schema.define(version: 20131101150937) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "slug"
+    t.string   "oauth_token"
+    t.string   "oauth_secret"
   end
 
+  add_index "users", ["oauth_token"], name: "index_users_on_oauth_token"
   add_index "users", ["slug"], name: "index_users_on_slug", unique: true
 
 end
