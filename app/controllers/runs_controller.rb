@@ -69,8 +69,8 @@ class RunsController < ApplicationController
   end
 
   def edit
+    @run = Run.find(params[:id])
     if current_user == @run.user
-      @run = Run.find(params[:id])
       if run_params[:video_url].present?
         @run.video_url = run_params[:video_url]
         respond_to do |format|
@@ -87,6 +87,7 @@ class RunsController < ApplicationController
           end
         end
       end
+    end
   end
 
   # POST /runs
