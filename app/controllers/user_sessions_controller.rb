@@ -19,7 +19,7 @@ class UserSessionsController < ApplicationController
   end
 
   def twitch_login
-    redirect_to 'https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_id=c6ik95x2hgxhjjmkbhwrszgcpj66ueh&redirect_uri=http://localhost:3000/login/twitch/auth&scope=user_read'
+    redirect_to 'https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_id=c6ik95x2hgxhjjmkbhwrszgcpj66ueh&redirect_uri=http://splitsdb.com/login/twitch/auth&scope=user_read'
   end
 
   def twitch_auth
@@ -27,7 +27,7 @@ class UserSessionsController < ApplicationController
       client_id:     'c6ik95x2hgxhjjmkbhwrszgcpj66ueh',
       client_secret: 'kdmnhh8q72tkm6ypa03hl1wug13pi0m',
       grant_type:    'authorization_code',
-      redirect_uri:  'http://localhost:3000/login/twitch/auth',
+      redirect_uri:  'http://splitsdb.com/login/twitch/auth',
       code:          params['code']
     }
     uri = URI.parse "https://api.twitch.tv/kraken/oauth2/token"

@@ -87,7 +87,6 @@ class RunsController < ApplicationController
           end
         end
       end
-    end
   end
 
   # POST /runs
