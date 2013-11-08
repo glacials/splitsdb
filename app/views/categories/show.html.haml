@@ -20,6 +20,11 @@
         %td{style: "border-top: none;"}
           %b="Finish time"
       - if @category
+        - if @category.runs.empty?
+          %tr
+            %td{colspan: 2}
+              %i
+                Nobody has uploaded any runs for this category.
         - @category.runs.each do |run|
           %tr{onclick: "document.location = '#{game_category_run_path(run.game, run.category, run)}'", style: "cursor: pointer;"}
             %a{href: game_category_run_path(run.game, run.category, run)}
@@ -32,3 +37,8 @@
             %td{colspan: 2}
               %a{href: new_game_category_run_path(@game, @category)}
                 + Upload a run for this category
+      - else
+        %tr
+          %td{colspan: 2}
+            %i
+              #{@game.name} has no categories.
