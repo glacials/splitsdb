@@ -53,7 +53,6 @@ ActiveRecord::Schema.define(version: 20131108035049) do
     t.integer  "attempts"
     t.integer  "offset"
     t.string   "size"
-    t.integer  "time"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "video_url"
@@ -67,8 +66,8 @@ ActiveRecord::Schema.define(version: 20131108035049) do
     t.string   "name"
     t.integer  "run_id"
     t.integer  "old"
-    t.integer  "best_run"
-    t.integer  "best_segment"
+    t.float    "best_run"
+    t.float    "best_segment"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
